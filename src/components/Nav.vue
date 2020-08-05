@@ -17,11 +17,12 @@
 
 
 <style lang="scss" scoped>
+@import '~@/assets/style/global.scss';
     .nav{
         display: flex;
         box-shadow:0 0 3px rgba(0,0,0,0.25);
         flex-direction: row;
-        font-size: 12px;
+        font-size: 15px;
         > .item{
             padding: 2px 0;
             display: flex;
@@ -30,13 +31,13 @@
             align-items: center;
             flex-direction: column;
             .icon{
-                width: 32px;
-                height: 32px;
+                width: 30px;
+                height: 30px;
             }
             
         }
         > .item.selected{
-            background-color: rgba(226, 226, 226, 0.726);
+            background-color: $color-buttoncolor
         }
     }
 </style>
