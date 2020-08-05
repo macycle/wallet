@@ -1,16 +1,11 @@
 <template>
-    <div>
-        LABELS
-        <Nav />
-    </div>
+    <Layout>
+        <template>labels</template>
+    </Layout>
 </template>
 
 <script>
     export default {
-        
+        name:'Labels'
     }
 </script>
-
-<style lang="sass" scoped>
-
-</style>
