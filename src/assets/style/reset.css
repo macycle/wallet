@@ -9,3 +9,15 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+li {
+  list-style: none;
+}
+
+button, input {
+  font: inherit;
+}
+
+:focus {
+  outline: none;
+}
