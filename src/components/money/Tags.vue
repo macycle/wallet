@@ -1,7 +1,7 @@
 <template>
     <div class="tags">
             <div class="new">
-                <button>新增标签</button>
+                <button @click="createTag">新增标签</button>
             </div>
             <ul class="current">
                 <li v-for="item in dataSource" :key="item" @click="toggle(item)" :class="selectedTags.indexOf(item)>=0?'selected':''">{{item}}</li>    <!--有多少个数据项，就生成多少个li，每个li的item都不一样；-->
@@ -24,6 +24,16 @@ import {Component,Prop} from 'vue-property-decorator';
                this.selectedTags.splice(index,1)
            }else{
                this.selectedTags.push(tag);
+           }
+           this.$emit('update:value',this.selectedTags)   //当我toggle变化的时候就会触发$emit
+       }
+       createTag(){
+           
+           const newTag =window.prompt('请输入标签!');
+           if(newTag===''){
+               window.alert('标签名不能为空');
+           }else if(this.dataSource){
+               this.$emit('update:dataSource',[...this.dataSource,newTag])
            }
        }
     }

@@ -2,34 +2,60 @@
     <Layout class-prefix="layout">
        
         <!--数字面板-->
-       <number-pad />
+       <number-pad @update:value='onUpdateMounts'/>
         
         <!--收支面板-->
-       <types />
+       <types :value.sync='record.type'/>
 
         <!--备注面板-->
-       <notes />
+       <notes @update:value='onUpdateNotes'/>
 
         <!--标签面板-->
-        <Tags :data-source="tags"/>   <!--驼峰式作为属性需要转化为-式-->
+        <Tags :data-source.sync="tags" @update:value='onUpdateTags'/>   <!--驼峰式作为属性需要转化为-式-->
 
        
     </Layout>
 </template>
 
-<script>
+<script lang='ts'>
+import Vue from 'vue';
 import NumberPad from '@/components/money/NumberPad.vue';
 import Types from '@/components/money/Types.vue';
 import Notes from '@/components/money/Notes.vue';
 import Tags from '@/components/money/Tags.vue'
-    export default {
-        name:'money',
-        data(){
-            return{
-                tags:['衣','食','住','行','彩票','嫖娼']
-            }
-        },
-        components:{NumberPad,Types,Notes,Tags},
+import {Component} from 'vue-property-decorator';
+
+type Record={
+    tags: string[];
+    notes: string;
+    type: string;
+    amount: number;
+}
+
+@Component({
+    components:{NumberPad,Types,Notes,Tags}
+})
+    export default class Money extends Vue{
+        tags=['衣','食','住','行','彩票','嫖娼'];
+
+        record: Record={
+            tags:[],
+            notes:'',
+            type:'+',
+            amount:0
+        }
+
+        onUpdateTags(value: string[]){
+           this.record.tags=value
+        }
+        onUpdateNotes(value: string){
+            this.record.notes=value
+        }
+        
+        onUpdateMounts(value: string){
+            this.record.amount=parseFloat(value)
+        }
+
     }
 </script>
 
