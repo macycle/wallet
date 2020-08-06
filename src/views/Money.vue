@@ -11,20 +11,25 @@
        <notes />
 
         <!--标签面板-->
-        <Tags />
+        <Tags :data-source="tags"/>   <!--驼峰式作为属性需要转化为-式-->
 
        
     </Layout>
 </template>
 
-<script lang='ts'>
+<script>
 import NumberPad from '@/components/money/NumberPad.vue';
 import Types from '@/components/money/Types.vue';
 import Notes from '@/components/money/Notes.vue';
 import Tags from '@/components/money/Tags.vue'
     export default {
         name:'money',
-        components:{NumberPad,Types,Notes,Tags}
+        data(){
+            return{
+                tags:['衣','食','住','行','彩票','嫖娼']
+            }
+        },
+        components:{NumberPad,Types,Notes,Tags},
     }
 </script>
 
