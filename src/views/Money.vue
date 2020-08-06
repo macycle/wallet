@@ -38,5 +38,4 @@ import Tags from '@/components/money/Tags.vue'
 
 <style lang='scss' scoped>
 @import '~@/assets/style/reset.scss';
-
 </style>

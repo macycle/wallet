@@ -1,15 +1,28 @@
 <template>
       <div>
             <ul class="types">
-                <li class="selected">支出</li>
-                <li >收入</li>
+                <li :class="type==='-'?'selected':''"  @click="changeType('-')">支出</li>
+                <li :class="type==='+'?'selected':''" @click="changeType('+')">收入</li>
             </ul>
         </div>
 </template>
 
 <script>
     export default {
-        name:'types'
+        name:'types',
+        data(){
+            return {
+                type:'-',    //'+'代表收入，'-'代表支出
+            }
+        },
+        methods:{
+            changeType(type){
+                if(type!=='-'&&type!=='+'){    
+                    throw new Error('type is unknown')
+                }
+                this.type=type;
+            }
+        }
     }
 </script>
 
@@ -26,7 +39,7 @@
         justify-content: center;
         align-items: center;
         position: relative;
-        &.selected::after{
+        &.selected::after{   /*after是控制selected的伪类 */
            content: '';
            position: absolute;
            bottom:0;
