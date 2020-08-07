@@ -4,20 +4,24 @@
                 <button @click="createTag">新增标签</button>
             </div>
             <ul class="current">
-                <li v-for="item in dataSource" :key="item" @click="toggle(item)" :class="selectedTags.indexOf(item)>=0?'selected':''">{{item}}</li>    <!--有多少个数据项，就生成多少个li，每个li的item都不一样；-->
+                <li v-for="item in dataSource" :key="item.id" @click="toggle(item)" :class="selectedTags.indexOf(item)>=0?'selected':''">{{item.name}}</li>    <!--有多少个数据项，就生成多少个li，每个li的item都不一样；-->
             </ul>
             
         </div>
 </template>
 
 <script lang='ts'>
-   import Vue from 'vue';
-import {Component,Prop} from 'vue-property-decorator';
+    import Vue from 'vue';
+    import {Component,Prop} from 'vue-property-decorator';
+    import tagListModel from '@/tagListModel';
+    tagListModel.fetch();
 
 @Component
     export default class Notes extends Vue{
        @Prop() dataSource: string[] | undefined;
        selectedTags: string[]=[];    //默认是一个数组；用来存放选中的tags;
+       tags=tagListModel.data;
+
        toggle(tag: string){
            const index=this.selectedTags.indexOf(tag);
            if(index>=0){
@@ -27,15 +31,18 @@ import {Component,Prop} from 'vue-property-decorator';
            }
            this.$emit('update:value',this.selectedTags)   //当我toggle变化的时候就会触发$emit
        }
-       createTag(){
-           
-           const newTag =window.prompt('请输入标签!');
-           if(newTag===''){
-               window.alert('标签名不能为空');
-           }else if(this.dataSource){
-               this.$emit('update:dataSource',[...this.dataSource,newTag])
-           }
-       }
+       
+        createTag(){
+            const name=window.prompt('请输入标签名');
+            if(name){
+                const message=tagListModel.create(name)
+                if(message === 'duplicated'){
+                    window.alert('标签名重复')
+                }else if(message==='success'){
+                    window.alert('添加成功')
+                }
+            }
+        }
     }
 </script>
 
