@@ -4,9 +4,7 @@
             <router-link class="tag" v-for="tag in tags" :key="tag.id" :to="`/labels/edit/${tag.id}`"><span>{{tag.name}}</span><Icon name='right'/></router-link>
             
         </div>
-        <div class="createTag-wrapper">
-            <button class="createTag" @click="createTag">新建标签</button>
-        </div>
+            <Button  @click.native="createTag" >新建标签</Button>
     </Layout>
 </template>
 
@@ -14,9 +12,10 @@
     import Vue from 'vue';
     import {Component} from 'vue-property-decorator';
     import tagListModel from '@/tagListModel';
+    import Button from '@/components/Button.vue';
     
     tagListModel.fetch();   
-    @Component
+    @Component({components:{Button}})
     export default class Labels extends Vue{
         tags=tagListModel.data;
         createTag(){
@@ -39,8 +38,6 @@
 .tags{
     background: white;
     font-size: 16px;
-    
-    
     >.tag{
         min-height: 44px;
         display: flex;
@@ -56,21 +53,5 @@
         }
     }
 }
-
-.createTag-wrapper{
-    text-align: center;
-    padding:16px;
-    margin-top:44-16 px ;
-    font-family: Arial, Helvetica, sans-serif;
-    .createTag{
-    background: rgba(95, 97, 236, 0.931);
-    color:white;
-    border-radius: 4px;   
-    border:none;
-    height: 40px;
-    padding:0 16px
-  }
-}
-
 
 </style>

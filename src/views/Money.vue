@@ -8,7 +8,7 @@
        <types :value.sync='record.type'/>
 
         <!--备注面板-->
-       <notes @update:value='onUpdateNotes'/>
+       <notes @update:value='onUpdateNotes' fileName="备注:" placeholder="请输入备注"/>
 
         <!--标签面板-->
         <Tags :data-source.sync="tags" @update:value='onUpdateTags'/>   <!--驼峰式作为属性需要转化为-式-->

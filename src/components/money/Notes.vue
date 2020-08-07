@@ -1,19 +1,21 @@
 <template>
     <div>
             <label class="notes">
-                <span class="name">备注:</span>
-                <input type="text" placeholder="在这里输入备注" v-model="value" @input="change">
+                <span class="name">{{this.fileName}}</span>
+                <input type="text" :placeholder="this.placeholder" v-model="value" @input="change">
             </label>
         </div> 
 </template>
 
 <script lang='ts'>
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
     export default class Notes extends Vue{
         value =''
+        @Prop({required:true}) fileName!: string;
+        @Prop() placeholder?: string;
         change(){
             this.$emit('update:value',this.value)
         }
@@ -22,7 +24,6 @@ import {Component} from 'vue-property-decorator';
 
 <style lang="scss" scoped>
 .notes{
-    background:#f5f5f5;
     display: flex;
     padding-left: 16px;
     align-items: center;
