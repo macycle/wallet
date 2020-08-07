@@ -1,6 +1,5 @@
 <template>
     <Layout class-prefix="layout">
-       
         <!--数字面板-->
        <number-pad @update:value='onUpdateMounts' @submit="saveRecord"/>
         

@@ -2,22 +2,23 @@
     <div>
             <label class="notes">
                 <span class="name">{{this.fileName}}</span>
-                <input type="text" :placeholder="this.placeholder" v-model="value" @input="change">
+                <input type="text" :placeholder="this.placeholder" :value="value" @input="change($event.target.value)">
             </label>
         </div> 
 </template>
 
 <script lang='ts'>
 import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 
 @Component
     export default class Notes extends Vue{
-        value =''
+        @Prop({default:''}) value!: string;
         @Prop({required:true}) fileName!: string;
         @Prop() placeholder?: string;
-        change(){
-            this.$emit('update:value',this.value)
+        @Watch('value')
+        change(value: string){
+            this.$emit('update:value',value)
         }
     }
 </script>
