@@ -2,7 +2,7 @@
     <div>
             <label class="notes">
                 <span class="name">{{this.fileName}}</span>
-                <input type="text" :placeholder="this.placeholder" :value="value" @input="change($event.target.value)">
+                <input type="text" :placeholder="placeholder" :value="value" @input="change($event.target.value)">
             </label>
         </div> 
 </template>
@@ -16,7 +16,7 @@ import {Component, Prop, Watch} from 'vue-property-decorator';
         @Prop({default:''}) value!: string;
         @Prop({required:true}) fileName!: string;
         @Prop() placeholder?: string;
-        @Watch('value')
+
         change(value: string){
             this.$emit('update:value',value)
         }
