@@ -6,45 +6,41 @@
             <span></span>
         </div>
         <div class="note-wrapper">
-             <Notes :value="tag.name" @update:value="updateTag" file-name="标签名:" placeholder="请输入标签名" ></Notes>
+             <Notes :value="tag.name" @update:value="update" file-name="标签名:" placeholder="请输入标签名" ></Notes>
         </div>
-        <Button class="edit" @click="remove">删除标签</Button>
+        <Button class="edit" @click="remove" class-prefix="delete">删除标签</Button>
     </Layout>
 </template>
 
 <script lang='ts'>
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import tagListModel from '@/tagListModel';
 import Notes from '@/components/money/Notes.vue';
-import Button from '@/components/Button.vue'
+import Button from '@/components/Button.vue';
 
-@Component({components:{Notes,Button}})
+@Component({
+    components:{Notes,Button},
+    })
     export default class EditLabel extends Vue{
-        tag?: {id: string;name: string}=undefined;
+        get tag(){
+            return this.$store.state.currentTag;
+        }
         created() {
-            const id=this.$route.params.id;
-            tagListModel.fetch();
-            const tags=tagListModel.data;
-            const tag=tags.filter(t=>t.id===id)[0];
-            if(tag){
-                this.tag=tag;
-            }else{
-                this.$router.replace('/404')
+            const id=this.$route.params.id;   //进入页面就可以获取params.id
+            this.$store.commit('fetchTags');
+            this.$store.commit('setCurrentTag',id);
+             if (!this.tag) {
+                this.$router.replace('/404');
             }
         }
-        updateTag(name: string){
+        update(name: string){
             if(this.tag){
-                tagListModel.update(this.tag.id,name);
+                this.$store.commit('updateTag',{id:this.tag.id,name});
             }
         }
         remove(){
             if(this.tag){
-                if(tagListModel.remove(this.tag.id)){
-                    this.$router.back()
-                }else{
-                    window.alert('删除失败')
-                }
+                this.$store.commit('removeTag',this.tag.id)
             }
             
         }
@@ -55,6 +51,10 @@ import Button from '@/components/Button.vue'
 </script>
 
 <style lang="scss" scoped>
+::v-deep .delete-button-color {
+    background:#f34856;
+}
+
 .edit{
    text-align: center;
    padding-top: 16px;

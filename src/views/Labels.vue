@@ -4,30 +4,29 @@
             <router-link class="tag" v-for="tag in tags" :key="tag.id" :to="`/labels/edit/${tag.id}`"><span>{{tag.name}}</span><Icon name='right'/></router-link>
             
         </div>
-            <Button  @click.native="createTag" >新建标签</Button>
+            <Button  @click.native="createTag" class-prefix="label">新建标签</Button>
     </Layout>
 </template>
 
 <script lang='ts'>
     import Vue from 'vue';
     import {Component} from 'vue-property-decorator';
-    import tagListModel from '@/tagListModel';
     import Button from '@/components/Button.vue';
-    
-    tagListModel.fetch();   
-    @Component({components:{Button}})
+     
+    @Component({   
+        components:{Button},
+        })
     export default class Labels extends Vue{
-        tags=window.tagList;
+        get tags(){
+             return this.$store.state.tagList;
+        }
+        beforeCreate(){
+            this.$store.commit('fetchTags');
+        }
         createTag(){
-            const name=window.prompt('请输入标签名');
-            if(name){
-                const message=tagListModel.create(name)
-                if(message === 'duplicated'){
-                    window.alert('标签名重复')
-                }else if(message==='success'){
-                    window.alert('添加成功')
-                }
-            }
+            const name = window.prompt('请输入标签名');
+             if (!name) { return window.alert('标签名不能为空'); }
+             this.$store.commit('createTag',name);
         }
         
     }
@@ -35,6 +34,11 @@
 </script>
 
 <style lang='scss' scoped>
+
+ ::v-deep .label-button-color {
+    background:#6981d1;
+}
+
 .tags{
     background: white;
     font-size: 16px;

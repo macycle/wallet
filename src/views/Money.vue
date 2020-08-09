@@ -1,16 +1,16 @@
 <template>
     <Layout class-prefix="layout">
         <!--数字面板-->
-       <number-pad @update:value='onUpdateMounts' @submit="saveRecord"/>
+       <numberPad :value.sync="record.amount" @submit="saveRecord"/>
         
         <!--收支面板-->
-       <types :value.sync='record.type'/>
+       <Tabs :data-source="typeList" :value.sync='record.type'/>
 
         <!--备注面板-->
-       <notes @update:value='onUpdateNotes' fileName="备注:" placeholder="请输入备注"/>
+       <Notes fileName="备注:" :value.sync="record.notes" placeholder="请输入备注"/>
 
         <!--标签面板-->
-        <Tags :data-source.sync="tags" @update:value='onUpdateTags'/>   <!--驼峰式作为属性需要转化为-式-->
+        <Tags @fuck="onUpdateTags"/>   <!--驼峰式作为属性需要转化为-式-->
 
        
     </Layout>
@@ -19,42 +19,50 @@
 <script lang='ts'>
 import Vue from 'vue';
 import NumberPad from '@/components/money/NumberPad.vue';
-import Types from '@/components/money/Types.vue';
 import Notes from '@/components/money/Notes.vue';
-import Tags from '@/components/money/Tags.vue'
-import {Component, Watch} from 'vue-property-decorator';
-import model from '@/model';
+import Tags from '@/components/money/Tags.vue';
+import Tabs from '@/components/Tabs.vue'
+import {Component} from 'vue-property-decorator';
 
 @Component({
-    components:{NumberPad,Types,Notes,Tags}
+    components:{NumberPad,Notes,Tags,Tabs},
+    
 })
     export default class Money extends Vue{
-        recordList: RecordItem[] = model.fetch();
-        tags=window.tagList;
-        record: RecordItem = {
-            tags:[],
-            notes:'',
-            type:'+',
-            amount:0,
+        typeList=[{text:'支出',value:'-'},{text:'收入',value:'+'}]
+        get recordList(){
+            return this.$store.state.recordList;
         }
 
-        onUpdateTags(value: string[]){
-           this.record.tags=value
+        record: RecordItem = {
+            tags: [],
+            amount:0,
+            notes:'',
+            type:'+',
+            
         }
+
+        created() {
+            this.$store.commit('fetchRecords')   //一开始从localstorage获取数据
+        }
+
         onUpdateNotes(value: string){
             this.record.notes=value
         }
-        
-        onUpdateMounts(value: string){
-            this.record.amount=parseFloat(value)
-        }
-        saveRecord(){
-            model.create(this.record)
-        }
 
-        @Watch('recordList')
-        onRecordListChange(){
-            model.save()
+        onUpdateTags(value: Tag[]){
+            this.record.tags=value;
+        }
+        
+        saveRecord(){
+            if(!this.record.tags||this.record.tags.length===0){
+                return window.alert('请至少选择一个标签')
+            }
+            this.$store.commit('createRecord',this.record);
+            if(this.$store.state.createRecordError===null){
+                window.alert('已保存');
+            }
+            
         }
 
     }

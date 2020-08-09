@@ -1,6 +1,6 @@
 <template>
     <div class="createTag-wrapper" @click="$emit('click',$event)">
-        <button class="button">
+        <button class="button" :class="{[classPrefix+'-button-color']:classPrefix}">
             <slot></slot>
         </button>
     </div>
@@ -8,14 +8,16 @@
 
 <script lang='ts'>
     import Vue from 'vue';
-    import {Component} from 'vue-property-decorator';
+    import {Component, Prop} from 'vue-property-decorator';
 
     @Component
     export default class Labels extends Vue{
+        @Prop() classPrefix?: string;
+        
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 
 .createTag-wrapper{
     
@@ -33,7 +35,6 @@
     padding:0 16px
   }
 }
-
 
 
 </style>
