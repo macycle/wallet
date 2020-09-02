@@ -1,4 +1,6 @@
-# morney-2
+# 贝迹记账-初版
+
+可以前往正式版查看。此版本功能不完善。
 
 ## Project setup
 ```
@@ -14,16 +16,3 @@ yarn serve
 ```
 yarn build
 ```
-
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
